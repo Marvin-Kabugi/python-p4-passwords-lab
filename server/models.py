@@ -6,13 +6,15 @@ from config import db, bcrypt
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
+    serialize_rules = ('-_password_hash',)
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
     _password_hash = db.Column(db.String)
 
     @hybrid_property
     def password_hash(self):
-        raise Exception('Password hashes may not be viewed.')
+        raise AttributeError('Password hashes may not be viewed.')
 
     @password_hash.setter
     def password_hash(self, password):
